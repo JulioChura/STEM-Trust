@@ -1,0 +1,106 @@
+{
+  "resumen": {
+    "totalAportado": 1250.00,
+    "totalPendiente": 400.00,
+    "totalValidado": 850.00,
+    "proximaFecha": "2026-03-15",
+    "scoring": 87
+  },
+  "pagos": [
+    {
+      "id": "pago-001",
+      "grupo": "Laptop para programadoras",
+      "grupo_id": "grp-001",
+      "monto": 200.00,
+      "moneda": "PEN",
+      "fecha": "2026-03-01",
+      "fechaLimite": "2026-03-05",
+      "estado": "validado",
+      "metodo": "Transferencia bancaria",
+      "comprobante": "comprobante_001.pdf",
+      "nota": "Ronda 1 - Marzo",
+      "ocr_verificado": true,
+      "puntualidad": 4
+    },
+    {
+      "id": "pago-002",
+      "grupo": "Kit IoT STEM Rural",
+      "grupo_id": "grp-002",
+      "monto": 150.00,
+      "moneda": "PEN",
+      "fecha": "2026-02-28",
+      "fechaLimite": "2026-03-01",
+      "estado": "validado",
+      "metodo": "Yape",
+      "comprobante": "comprobante_002.jpg",
+      "nota": "Ronda 2 - Febrero",
+      "ocr_verificado": true,
+      "puntualidad": 2
+    },
+    {
+      "id": "pago-003",
+      "grupo": "Laptop para programadoras",
+      "grupo_id": "grp-001",
+      "monto": 200.00,
+      "moneda": "PEN",
+      "fecha": null,
+      "fechaLimite": "2026-03-15",
+      "estado": "pendiente",
+      "metodo": null,
+      "comprobante": null,
+      "nota": "Ronda 2 - Marzo",
+      "ocr_verificado": false,
+      "puntualidad": null
+    },
+    {
+      "id": "pago-004",
+      "grupo": "Kit IoT STEM Rural",
+      "grupo_id": "grp-002",
+      "monto": 150.00,
+      "moneda": "PEN",
+      "fecha": "2026-02-10",
+      "fechaLimite": "2026-02-12",
+      "estado": "validado",
+      "metodo": "Transferencia bancaria",
+      "comprobante": "comprobante_004.pdf",
+      "nota": "Ronda 1 - Febrero",
+      "ocr_verificado": true,
+      "puntualidad": 1
+    },
+    {
+      "id": "pago-005",
+      "grupo": "Tablet para diseñadoras UX",
+      "grupo_id": "grp-003",
+      "monto": 300.00,
+      "moneda": "PEN",
+      "fecha": "2026-03-03",
+      "fechaLimite": "2026-03-02",
+      "estado": "revisando",
+      "metodo": "Plin",
+      "comprobante": "comprobante_005.jpg",
+      "nota": "Ronda 1 - Marzo",
+      "ocr_verificado": false,
+      "puntualidad": -1
+    },
+    {
+      "id": "pago-006",
+      "grupo": "Tablet para diseñadoras UX",
+      "grupo_id": "grp-003",
+      "monto": 250.00,
+      "moneda": "PEN",
+      "fecha": null,
+      "fechaLimite": "2026-04-01",
+      "estado": "pendiente",
+      "metodo": null,
+      "comprobante": null,
+      "nota": "Ronda 2 - Abril",
+      "ocr_verificado": false,
+      "puntualidad": null
+    }
+  ],
+  "grupos": [
+    { "id": "grp-001", "nombre": "Laptop para programadoras", "meta": 3000, "acumulado": 1200, "participantes": 4 },
+    { "id": "grp-002", "nombre": "Kit IoT STEM Rural", "meta": 2400, "acumulado": 1800, "participantes": 3 },
+    { "id": "grp-003", "nombre": "Tablet para diseñadoras UX", "meta": 2000, "acumulado": 600, "participantes": 5 }
+  ]
+}

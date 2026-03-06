@@ -35,18 +35,20 @@ const stats = [
 ];
 
 const quickActions = [
-  { label: "Crear grupo", desc: "Forma un grupo de ahorro STEM", icon: Plus, to: "/groups/new", accent: "from-violet-600 to-indigo-600" },
-  { label: "Unirse a grupo", desc: "Busca grupos con tu objetivo", icon: Users, to: "/groups", accent: "from-cyan-600 to-teal-600" },
-  { label: "Cargar comprobante", desc: "Valida tu aporte con OCR", icon: Shield, to: "/payments/upload", accent: "from-emerald-600 to-green-600" },
+  { label: "Crear grupo",        desc: "Forma un grupo de ahorro STEM",   icon: Plus,             to: "/groups/new",       accent: "from-violet-600 to-indigo-600" },
+  { label: "Unirse a grupo",     desc: "Busca grupos con tu objetivo",   icon: Users,            to: "/groups",           accent: "from-cyan-600 to-teal-600"    },
+  { label: "Mis pagos",          desc: "Historial y comprobantes OCR",   icon: CircleDollarSign, to: "/pagos",            accent: "from-emerald-600 to-green-600" },
+  { label: "Cargar comprobante", desc: "Valida tu aporte con OCR",       icon: Shield,           to: "/payments/upload",  accent: "from-amber-600 to-orange-600" },
 ];
 
 const navLinks = [
-  { label: "Dashboard", icon: BarChart2, to: "/dashboard", active: true },
-  { label: "Mis grupos", icon: Users, to: "/groups", active: false },
-  { label: "Activos STEM", icon: Laptop, to: "/assets", active: false },
-  { label: "Progreso STEM", icon: TrendingUp, to: "/progress", active: false },
-  { label: "Perfil", icon: User, to: "/profile", active: false },
-  { label: "Configuración", icon: Settings, to: "/settings", active: false },
+  { label: "Dashboard",    icon: BarChart2,        to: "/dashboard", active: true  },
+  { label: "Mis grupos",   icon: Users,            to: "/groups",    active: false },
+  { label: "Pagos",        icon: CircleDollarSign, to: "/pagos",     active: false },
+  { label: "Activos STEM", icon: Laptop,           to: "/assets",   active: false },
+  { label: "Progreso STEM",icon: TrendingUp,       to: "/progress", active: false },
+  { label: "Perfil",       icon: User,             to: "/profile",  active: false },
+  { label: "Configuración",icon: Settings,         to: "/settings", active: false },
 ];
 </script>
 
@@ -173,6 +175,7 @@ const navLinks = [
               v-for="action in quickActions"
               :key="action.label"
               class="group text-left bg-white/5 hover:bg-white/8 border border-white/10 hover:border-white/20 rounded-2xl p-5 transition-all hover:-translate-y-0.5"
+              @click="router.push(action.to)"
             >
               <div :class="`w-10 h-10 rounded-xl bg-gradient-to-br ${action.accent} flex items-center justify-center mb-4 shadow-lg`">
                 <component :is="action.icon" class="w-5 h-5 text-white" />

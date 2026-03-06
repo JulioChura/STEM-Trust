@@ -6,6 +6,7 @@ import RegisterView from "../views/RegisterView.vue";
 import AuthPlaygroundView from "../views/AuthPlaygroundView.vue";
 import DashboardView from "../views/DashboardView.vue";
 import ProfileView from "../views/ProfileView.vue";
+import PagosView from "../views/pagos/PagosView.vue";
 
 const routes = [
   {
@@ -43,6 +44,12 @@ const routes = [
     path: "/profile",
     name: "profile",
     component: ProfileView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/pagos",
+    name: "pagos",
+    component: PagosView,
     meta: { requiresAuth: true },
   },
 ];
