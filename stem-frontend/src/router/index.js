@@ -108,11 +108,29 @@ const routes = [
     component: SettingsView,
     meta: { requiresAuth: true },
   },
+  // ── Alias de secciones del perfil ─────────────────────
+  {
+    path: "/assets",
+    redirect: () => ({ path: "/profile", hash: "#activos-stem" }),
+  },
+  {
+    path: "/progress",
+    redirect: () => ({ path: "/profile", hash: "#progreso-stem" }),
+  },
 ];
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, _from, savedPosition) {
+    if (savedPosition) return savedPosition;
+    if (to.hash) {
+      return new Promise(resolve => {
+        setTimeout(() => resolve({ el: to.hash, behavior: "smooth", top: 80 }), 120);
+      });
+    }
+    return { top: 0 };
+  },
 });
 
 router.beforeEach((to) => {

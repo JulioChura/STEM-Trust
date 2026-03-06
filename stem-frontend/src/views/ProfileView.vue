@@ -812,7 +812,7 @@ const bioText  = ref("Apasionada por la tecnología y el ahorro colaborativo. Bu
       <!-- ═══════════════════════════════════════════
            ACTIVOS STEM
       ═══════════════════════════════════════════ -->
-      <div class="bg-[#0D1225] border border-white/8 rounded-3xl p-7">
+      <div id="activos-stem" class="bg-[#0D1225] border border-white/8 rounded-3xl p-7 scroll-mt-20">
 
         <!-- Header -->
         <div class="flex items-start justify-between mb-6">
@@ -937,7 +937,7 @@ const bioText  = ref("Apasionada por la tecnología y el ahorro colaborativo. Bu
       <!-- ═══════════════════════════════════════════
            PROGRESO STEM
       ═══════════════════════════════════════════ -->
-      <div class="grid lg:grid-cols-5 gap-6">
+      <div id="progreso-stem" class="grid lg:grid-cols-5 gap-6 scroll-mt-20">
 
         <!-- NIVEL DE USUARIA (col-span-2) -->
         <div class="lg:col-span-2 bg-[#0D1225] border border-white/8 rounded-3xl p-7 flex flex-col gap-5">

@@ -30,6 +30,18 @@ async function logout() {
   router.push("/");
 }
 
+function isActive(link) {
+  // Para links que redirigen a /profile con hash
+  if (link.to === "/assets")
+    return route.path === "/profile" && route.hash === "#activos-stem";
+  if (link.to === "/progress")
+    return route.path === "/profile" && route.hash === "#progreso-stem";
+  // Para /profile sin hash, evitar que se active cuando estamos en sub-ancla
+  if (link.to === "/profile")
+    return route.path === "/profile" && !route.hash;
+  return route.path.startsWith(link.to);
+}
+
 const navLinks = [
   { label: "Dashboard",     icon: BarChart2,         to: "/dashboard" },
   { label: "Explorar grupos", icon: Users,            to: "/groups" },
@@ -67,7 +79,7 @@ const navLinks = [
           :key="link.to"
           :to="link.to"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all no-underline"
-          :class="route.path.startsWith(link.to)
+          :class="isActive(link)
             ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
             : 'text-slate-400 hover:text-white hover:bg-white/5'"
         >
