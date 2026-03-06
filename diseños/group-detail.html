@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle del Grupo · STEM-Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header (igual) -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-2">
+                    <a href="dashboard.html" class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center">
+                            <i class="fas fa-shield-halved text-sm"></i>
+                        </div>
+                        <span class="font-bold text-gray-800 text-lg">STEM-Trust</span>
+                    </a>
+                </div>
+                <div class="flex items-center gap-4">
+                    <a href="notifications.html" class="text-gray-500 hover:text-indigo-600 relative">
+                        <i class="fas fa-bell text-lg"></i>
+                        <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+                    </a>
+                    <a href="profile.html" class="flex items-center gap-2">
+                        <span class="text-sm text-gray-600 hidden sm:block">María Gómez</span>
+                        <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-semibold">MG</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-2 text-sm py-3">
+                <a href="dashboard.html" class="text-gray-500 hover:text-gray-700">Inicio</a>
+                <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                <a href="feed.html" class="text-gray-500 hover:text-gray-700">Explorar</a>
+                <i class="fas fa-chevron-right text-xs text-gray-400"></i>
+                <span class="text-indigo-600 font-medium">Bootcamp Python + Laptop</span>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+            <!-- Cabecera del grupo -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-6 text-white">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h1 class="text-2xl font-bold">Bootcamp Python + Laptop</h1>
+                        <p class="text-indigo-100 mt-1">Creado por Ana · Hace 2 semanas</p>
+                    </div>
+                    <span class="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-sm">Pro</span>
+                </div>
+            </div>
+
+            <!-- Contenido -->
+            <div class="p-6">
+                <!-- Métricas -->
+                <div class="grid grid-cols-3 gap-4 mb-6">
+                    <div class="text-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl font-bold text-gray-800">3/5</span>
+                        <p class="text-xs text-gray-500">Integrantes</p>
+                    </div>
+                    <div class="text-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl font-bold text-gray-800">S/2,450</span>
+                        <p class="text-xs text-gray-500">de S/3,200 meta</p>
+                    </div>
+                    <div class="text-center p-3 bg-gray-50 rounded-lg">
+                        <span class="text-2xl font-bold text-gray-800">15 jun</span>
+                        <p class="text-xs text-gray-500">Próximo aporte</p>
+                    </div>
+                </div>
+
+                <!-- Descripción -->
+                <div class="mb-6">
+                    <h3 class="font-semibold text-gray-800 mb-2">Sobre el grupo</h3>
+                    <p class="text-sm text-gray-600">Grupo de mujeres interesadas en completar un bootcamp de Python. Necesitamos adquirir laptops para el curso. El pago final se hará directamente al proveedor.</p>
+                </div>
+
+                <!-- Integrantes -->
+                <div class="mb-6">
+                    <h3 class="font-semibold text-gray-800 mb-3">Integrantes (3/5)</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 font-semibold">AN</div>
+                                <div>
+                                    <p class="font-medium">Ana (Organizadora)</p>
+                                    <p class="text-xs text-gray-500">4 aportes · Score 820</p>
+                                </div>
+                            </div>
+                            <span class="text-green-600 text-sm">✓ Al día</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center text-green-700 font-semibold">MG</div>
+                                <div>
+                                    <p class="font-medium">María (Tú)</p>
+                                    <p class="text-xs text-gray-500">3 aportes · Score 780</p>
+                                </div>
+                            </div>
+                            <span class="text-green-600 text-sm">✓ Al día</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-700 font-semibold">CL</div>
+                                <div>
+                                    <p class="font-medium">Carla</p>
+                                    <p class="text-xs text-gray-500">2 aportes · Score 690</p>
+                                </div>
+                            </div>
+                            <span class="text-yellow-600 text-sm">Pendiente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historial de aportes -->
+                <div class="mb-6">
+                    <h3 class="font-semibold text-gray-800 mb-3">Historial de aportes</h3>
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm p-2 bg-gray-50 rounded">
+                            <span>Ana · 5 jun 2024</span>
+                            <span class="font-medium">S/ 150</span>
+                            <span class="text-green-600 text-xs">Verificado</span>
+                        </div>
+                        <div class="flex justify-between text-sm p-2 bg-gray-50 rounded">
+                            <span>María · 5 jun 2024</span>
+                            <span class="font-medium">S/ 150</span>
+                            <span class="text-green-600 text-xs">Verificado</span>
+                        </div>
+                        <div class="flex justify-between text-sm p-2 bg-gray-50 rounded">
+                            <span>Carla · 5 jun 2024</span>
+                            <span class="font-medium">S/ 150</span>
+                            <span class="text-yellow-600 text-xs">Pendiente</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex gap-3">
+                    <a href="payment-proof.html" class="flex-1 bg-indigo-600 text-white text-center py-3 rounded-xl hover:bg-indigo-700 font-medium">
+                        Realizar aporte
+                    </a>
+                    <a href="#" class="flex-1 border border-indigo-600 text-indigo-600 text-center py-3 rounded-xl hover:bg-indigo-50 font-medium">
+                        Ver comprobantes
+                    </a>
+                </div>
+
+                <!-- Coincidencia IA -->
+                <div class="mt-4 p-4 bg-indigo-50 rounded-lg">
+                    <div class="flex items-center gap-2 text-indigo-700 mb-2">
+                        <i class="fas fa-brain"></i>
+                        <span class="font-semibold">Análisis de compatibilidad</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Este grupo tiene un <span class="font-bold text-indigo-600">98% de coincidencia</span> con tus intereses (Programación, Data Science).</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

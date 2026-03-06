@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión · STEM-Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gradient-to-br from-indigo-50 via-white to-purple-50 font-sans antialiased flex items-center justify-center min-h-screen p-4">
+    <div class="w-full max-w-md">
+        <!-- Logo y nombre -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-600 text-white rounded-2xl shadow-lg mb-4">
+                <i class="fas fa-shield-halved text-3xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-gray-800">STEM‑Trust</h1>
+            <p class="text-gray-500 mt-1">Confianza circular para mujeres en STEM</p>
+        </div>
+
+        <!-- Tarjeta de login -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/50">
+            <h2 class="text-xl font-semibold text-gray-700 mb-6">Bienvenida de nuevo</h2>
+            
+            <form class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Correo electrónico</label>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="email" placeholder="ej. maria@ejemplo.com" value="maria@ejemplo.com"
+                               class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-400 focus:ring focus:ring-indigo-200 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-600 mb-1">Contraseña</label>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="password" placeholder="••••••••" value="password123"
+                               class="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:border-indigo-400 focus:ring focus:ring-indigo-200 transition">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-sm">
+                    <label class="flex items-center gap-2 text-gray-600">
+                        <input type="checkbox" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-400"> Recordarme
+                    </label>
+                    <a href="#" class="text-indigo-600 hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+
+                <a href="dashboard.html" class="block w-full text-center bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl shadow-md transition transform hover:scale-[1.01]">
+                    Ingresar al ecosistema
+                </a>
+            </form>
+
+            <p class="text-center text-gray-500 text-sm mt-6">
+                ¿No tienes cuenta? 
+                <a href="register.html" class="text-indigo-600 font-medium hover:underline">Regístrate aquí</a>
+            </p>
+
+            <!-- Demo quick links -->
+            <div class="mt-8 pt-5 border-t border-gray-200">
+                <p class="text-xs text-center text-gray-400 mb-3">Vista rápida de demostración:</p>
+                <div class="flex justify-center gap-2 text-xs">
+                    <a href="dashboard.html" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full">Dashboard</a>
+                    <a href="organizer-panel.html" class="bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-full">Panel Organizador</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

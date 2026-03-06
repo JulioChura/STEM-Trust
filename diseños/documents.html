@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentos · STEM-Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header y navegación (igual) -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">...</header>
+    <nav class="bg-white border-b border-gray-200">...</nav>
+
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Documentos e historial</h2>
+        <p class="text-gray-500 mb-6">Descarga resúmenes de tu actividad financiera grupal.</p>
+
+        <div class="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+            <!-- item de descarga clickeable -->
+            <a href="document-detail.html?id=1" class="flex justify-between items-center border-b pb-4 mb-4 hover:bg-gray-50 p-2 rounded transition">
+                <div>
+                    <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                        <i class="fas fa-file-pdf text-red-500"></i> Resumen de juntas cumplidas
+                    </h4>
+                    <p class="text-xs text-gray-500">Incluye todos los grupos (Laptop, Cursos) · actualizado al 10 jun 2024</p>
+                </div>
+                <span class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-download"></i> PDF
+                </span>
+            </a>
+
+            <!-- segundo documento clickeable -->
+            <a href="document-detail.html?id=2" class="flex justify-between items-center border-b pb-4 mb-4 hover:bg-gray-50 p-2 rounded transition">
+                <div>
+                    <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                        <i class="fas fa-file-excel text-green-600"></i> Historial de aportes (CSV)
+                    </h4>
+                    <p class="text-xs text-gray-500">Listado detallado de transacciones verificadas por OCR.</p>
+                </div>
+                <span class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-download"></i> CSV
+                </span>
+            </a>
+
+            <!-- constancia de scoring clickeable -->
+            <a href="document-detail.html?id=3" class="flex justify-between items-center hover:bg-gray-50 p-2 rounded transition">
+                <div>
+                    <h4 class="font-semibold text-gray-800 flex items-center gap-2">
+                        <i class="fas fa-certificate text-purple-500"></i> Constancia de Scoring STEM
+                    </h4>
+                    <p class="text-xs text-gray-500">Documento de respaldo para entidades financieras (B2B).</p>
+                </div>
+                <span class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2">
+                    <i class="fas fa-download"></i> Descargar
+                </span>
+            </a>
+        </div>
+
+        <!-- nota de uso -->
+        <div class="mt-6 text-xs text-gray-400 bg-blue-50 border border-blue-100 rounded-lg p-4">
+            <i class="fas fa-info-circle mr-1"></i> Estos documentos pueden ser utilizados como evidencia de responsabilidad financiera ante cajas rurales o bancos aliados (programa STEM-Trust Insights).
+        </div>
+    </main>
+</body>
+</html>

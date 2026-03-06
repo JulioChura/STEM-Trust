@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago confirmado · STEM-Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header simplificado -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="dashboard.html" class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-indigo-600 text-white rounded-lg flex items-center justify-center">
+                        <i class="fas fa-shield-halved text-sm"></i>
+                    </div>
+                    <span class="font-bold text-gray-800 text-lg">STEM-Trust</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-lg mx-auto px-4 py-12">
+        <div class="bg-white rounded-2xl border border-gray-200 p-8 text-center shadow-lg">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check-circle text-4xl text-green-600"></i>
+            </div>
+            
+            <h2 class="text-2xl font-bold text-gray-800 mb-2">¡Aporte registrado!</h2>
+            <p class="text-gray-500 mb-6">Tu comprobante ha sido verificado con IA correctamente.</p>
+
+            <div class="bg-gray-50 rounded-xl p-4 mb-6 text-left">
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Monto:</span>
+                    <span class="font-semibold text-green-600">S/ 150.00</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Grupo:</span>
+                    <span class="font-semibold">Laptop para Bootcamp</span>
+                </div>
+                <div class="flex justify-between mb-2">
+                    <span class="text-gray-600">Fecha:</span>
+                    <span class="font-semibold">10 de junio, 2024</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-600">Método:</span>
+                    <span class="font-semibold">Yape · Verificado con IA</span>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-3">
+                <a href="group-detail.html?id=active1" class="bg-indigo-600 text-white py-3 rounded-xl hover:bg-indigo-700 font-medium">
+                    Ver grupo
+                </a>
+                <a href="dashboard.html" class="border border-indigo-600 text-indigo-600 py-3 rounded-xl hover:bg-indigo-50 font-medium">
+                    Ir al inicio
+                </a>
+            </div>
+
+            <!-- Opción de descarga -->
+            <div class="mt-6 pt-4 border-t border-gray-200">
+                <a href="document-detail.html" class="text-sm text-indigo-600 hover:underline flex items-center justify-center gap-1">
+                    <i class="fas fa-download"></i>
+                    Descargar comprobante fiscal
+                </a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

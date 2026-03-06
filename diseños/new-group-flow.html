@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear grupo inteligente · STEM-Trust</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header y navegación (igual) -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-10">...</header>
+    <nav class="bg-white border-b border-gray-200">...</nav>
+
+    <main class="max-w-3xl mx-auto px-4 py-8">
+        <div class="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Crear grupo con IA inteligente</h2>
+
+            <!-- Paso 1: Activo (igual) -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-600 mb-2">1. Activo productivo deseado</label>
+                <select class="w-full border border-gray-200 rounded-xl p-3 focus:border-indigo-400">
+                    <option>Laptop para programación (desde S/2,500)</option>
+                    <option>Kit de robótica STEM (desde S/950)</option>
+                    <option>Impresora 3D (desde S/1,800)</option>
+                    <option>Tablet con lápiz digital (desde S/900)</option>
+                </select>
+            </div>
+
+            <!-- NUEVO: Análisis de similitud semántica (bigramas/clustering) -->
+            <div class="mb-6 p-4 bg-indigo-50 rounded-xl border border-indigo-200">
+                <div class="flex items-center gap-2 text-indigo-700 mb-3">
+                    <i class="fas fa-brain"></i>
+                    <span class="font-semibold">Agrupación inteligente (IA activada)</span>
+                </div>
+                <p class="text-sm text-gray-600 mb-3">Analizando perfiles con similitud de cosenos y bigramas...</p>
+                <div class="space-y-2">
+                    <!-- Usuarias recomendadas por el algoritmo -->
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-sm">98%</div>
+                            <div>
+                                <span class="font-medium">Lucía Méndez</span>
+                                <p class="text-xs text-gray-500">Programación · Data Science</p>
+                            </div>
+                        </div>
+                        <button class="text-indigo-600 text-sm border border-indigo-200 px-3 py-1 rounded-lg hover:bg-indigo-50">Invitar</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 text-sm">95%</div>
+                            <div>
+                                <span class="font-medium">Carmen Ríos</span>
+                                <p class="text-xs text-gray-500">Backend · Python</p>
+                            </div>
+                        </div>
+                        <button class="text-indigo-600 text-sm border border-indigo-200 px-3 py-1 rounded-lg hover:bg-indigo-50">Invitar</button>
+                    </div>
+                    <div class="flex items-center justify-between bg-white p-3 rounded-lg opacity-70">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600 text-sm">72%</div>
+                            <div>
+                                <span class="font-medium">Sofía Torres</span>
+                                <p class="text-xs text-gray-500">Diseño · No-code</p>
+                            </div>
+                        </div>
+                        <button class="text-indigo-600 text-sm border border-indigo-200 px-3 py-1 rounded-lg hover:bg-indigo-50">Invitar</button>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-3">* Coincidencia basada en clúster de intereses y bigramas de perfil.</p>
+            </div>
+
+            <!-- Número de participantes (actualizado) -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-600 mb-2">2. Número de integrantes (incluyéndote)</label>
+                <div class="flex gap-3">
+                    <button class="w-10 h-10 border rounded-lg text-gray-600 hover:bg-gray-100">3</button>
+                    <button class="w-10 h-10 border rounded-lg bg-indigo-600 text-white">4</button>
+                    <button class="w-10 h-10 border rounded-lg text-gray-600 hover:bg-gray-100">5</button>
+                </div>
+            </div>
+
+            <!-- Tipo de grupo (igual) -->
+            <div class="mb-6">
+                <span class="block text-sm font-medium text-gray-600 mb-2">3. Tipo de grupo</span>
+                <div class="flex gap-4">
+                    <label class="flex items-center gap-2 bg-indigo-50 border border-indigo-200 rounded-xl px-4 py-3 cursor-pointer">
+                        <input type="radio" name="tipo" checked class="text-indigo-600"> <span class="font-medium">Pro · Activo STEM</span>
+                    </label>
+                    <label class="flex items-center gap-2 border border-gray-200 rounded-xl px-4 py-3 cursor-pointer">
+                        <input type="radio" name="tipo" class="text-indigo-600"> <span class="font-medium">Social · Gastos cotidianos</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Resumen y botón (igual) -->
+            <div class="bg-gray-50 p-4 rounded-xl mb-6">
+                <p class="text-sm text-gray-600"><span class="font-semibold">Activo:</span> Laptop para programación</p>
+                <p class="text-sm text-gray-600"><span class="font-semibold">Meta estimada:</span> S/2,800 (S/700 por persona en 4 cuotas)</p>
+                <p class="text-sm text-gray-600"><span class="font-semibold">Modalidad:</span> Pago directo a proveedor al completar el grupo.</p>
+            </div>
+
+            <div class="flex gap-3">
+                <a href="groups.html" class="border border-gray-300 text-gray-700 px-6 py-2 rounded-xl hover:bg-gray-50">Cancelar</a>
+                <a href="groups.html" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-xl flex-1 text-center">Crear grupo con IA</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
