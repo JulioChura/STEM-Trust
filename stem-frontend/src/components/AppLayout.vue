@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {
   Sparkles, Users, Laptop, TrendingUp, Bell,
-  LogOut, BarChart2, BookOpen, Settings, User, Menu
+  LogOut, BarChart2, BookOpen, Settings, User, Menu, CircleDollarSign
 } from "lucide-vue-next";
 import { authStore } from "../stores/authStore";
 import { authService } from "../services/authService";
@@ -31,13 +31,14 @@ async function logout() {
 }
 
 const navLinks = [
-  { label: "Dashboard",    icon: BarChart2,   to: "/dashboard" },
-  { label: "Explorar grupos", icon: Users,    to: "/groups" },
-  { label: "Activos STEM",  icon: Laptop,     to: "/assets" },
-  { label: "Progreso STEM", icon: TrendingUp, to: "/progress" },
-  { label: "Cursos",        icon: BookOpen,   to: "/courses" },
-  { label: "Perfil",        icon: User,       to: "/profile" },
-  { label: "Configuración", icon: Settings,   to: "/settings" },
+  { label: "Dashboard",     icon: BarChart2,         to: "/dashboard" },
+  { label: "Explorar grupos", icon: Users,            to: "/groups" },
+  { label: "Pagos",          icon: CircleDollarSign,  to: "/pagos" },
+  { label: "Activos STEM",   icon: Laptop,            to: "/assets" },
+  { label: "Progreso STEM",  icon: TrendingUp,        to: "/progress" },
+  { label: "Cursos",         icon: BookOpen,          to: "/courses" },
+  { label: "Perfil",         icon: User,              to: "/profile" },
+  { label: "Configuración",  icon: Settings,          to: "/settings" },
 ];
 </script>
 
