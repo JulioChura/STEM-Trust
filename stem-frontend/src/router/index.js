@@ -15,6 +15,7 @@ import PagosView from "../views/pagos/PagosView.vue";
 import HistorialView from "../views/historial/HistorialView.vue";
 import ProgresoView from "../views/progreso/ProgresoView.vue";
 import SettingsView from "../views/SettingsView.vue";
+import OfertasView from "../views/OfertasView.vue";
 
 const routes = [
   {
@@ -106,6 +107,12 @@ const routes = [
     path: "/settings",
     name: "settings",
     component: SettingsView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/ofertas",
+    name: "ofertas",
+    component: OfertasView,
     meta: { requiresAuth: true },
   },
   // ── Alias de secciones del perfil ─────────────────────

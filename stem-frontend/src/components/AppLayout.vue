@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {
   Sparkles, Users, Laptop, TrendingUp, Bell,
-  LogOut, BarChart2, BookOpen, Settings, User, Menu, CircleDollarSign
+  LogOut, BarChart2, BookOpen, Settings, User, Menu, CircleDollarSign, BadgePercent
 } from "lucide-vue-next";
 import { authStore } from "../stores/authStore";
 import { authService } from "../services/authService";
@@ -47,6 +47,9 @@ const navLinks = [
   { label: "Activos STEM",    icon: Laptop,           to: "/assets" },
   { label: "Progreso STEM",   icon: TrendingUp,       to: "/progress" },
   { label: "Historial",       icon: BarChart2,        to: "/historial" },
+  { divider: true },
+  { label: "Ofertas",         icon: BadgePercent,     to: "/ofertas", highlight: true },
+  { divider: true },
   { label: "Perfil",          icon: User,             to: "/profile" },
   { label: "Configuración",   icon: Settings,        to: "/settings" },
 ];
@@ -72,18 +75,25 @@ const navLinks = [
       </div>
 
       <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
-        <router-link
-          v-for="link in navLinks"
-          :key="link.to"
-          :to="link.to"
-          class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all no-underline"
-          :class="isActive(link)
-            ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
-            : 'text-slate-400 hover:text-white hover:bg-white/5'"
-        >
-          <component :is="link.icon" class="w-4 h-4 shrink-0" />
-          {{ link.label }}
-        </router-link>
+        <template v-for="link in navLinks" :key="link.divider ? 'div-' + Math.random() : link.to">
+          <!-- Divider -->
+          <div v-if="link.divider" class="my-2 h-px bg-white/6 mx-2"></div>
+          <!-- Nav link normal -->
+          <router-link
+            v-else
+            :to="link.to"
+            class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all no-underline"
+            :class="isActive(link)
+              ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
+              : link.highlight
+                ? 'text-amber-400 hover:text-amber-300 hover:bg-amber-500/8 border border-amber-500/20'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'"
+          >
+            <component :is="link.icon" class="w-4 h-4 shrink-0" />
+            {{ link.label }}
+            <span v-if="link.highlight" class="ml-auto text-[9px] font-bold bg-amber-500/20 border border-amber-500/30 text-amber-400 px-1.5 py-0.5 rounded-full">NUEVO</span>
+          </router-link>
+        </template>
       </nav>
 
       <div class="p-3 border-t border-white/5 shrink-0">
