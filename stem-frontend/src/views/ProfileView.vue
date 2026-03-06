@@ -217,6 +217,149 @@ const statsCards = computed(() => [
   },
 ]);
 
+// ══════════════════════════════════════════════════════════
+//  ACTIVOS STEM — catálogo de herramientas que la usuaria
+//  financia / ha adquirido a través de grupos
+// ══════════════════════════════════════════════════════════
+const assetTab = ref("todos");
+
+const stemAssets = [
+  {
+    id: 1, emoji: "💻", name: "MacBook Air M2",
+    cat: "Hardware", catColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
+    objetivo: 1800, ahorrado: 1800, estado: "adquirido",
+    grupo: "Codelandia", fechaAdq: "Nov 2025",
+    desc: "Laptop principal para desarrollo",
+  },
+  {
+    id: 2, emoji: "✏️", name: "Tablet Wacom Intuos",
+    cat: "Diseño", catColor: "text-pink-400 bg-pink-500/10 border-pink-500/25",
+    objetivo: 450, ahorrado: 351, estado: "ahorrando",
+    grupo: "Diseñadoras Pro", fechaAdq: null,
+    desc: "Para ilustración y UX/UI",
+  },
+  {
+    id: 3, emoji: "🎓", name: "Bootcamp Full Stack",
+    cat: "Educación", catColor: "text-amber-400 bg-amber-500/10 border-amber-500/25",
+    objetivo: 1200, ahorrado: 540, estado: "ahorrando",
+    grupo: "Dev Sisters", fechaAdq: null,
+    desc: "React + Node · 6 meses",
+  },
+  {
+    id: 4, emoji: "📡", name: "Kit IoT Arduino Pro",
+    cat: "Hardware", catColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
+    objetivo: 280, ahorrado: 280, estado: "adquirido",
+    grupo: "Makers LATAM", fechaAdq: "Ene 2026",
+    desc: "Sensores + microcontroladores",
+  },
+  {
+    id: 5, emoji: "🖥️", name: "Monitor Ultrawide 34\"",
+    cat: "Hardware", catColor: "text-cyan-400 bg-cyan-500/10 border-cyan-500/25",
+    objetivo: 700, ahorrado: 168, estado: "ahorrando",
+    grupo: "Setup Pro", fechaAdq: null,
+    desc: "LG 34\" curvo para productividad",
+  },
+  {
+    id: 6, emoji: "🔬", name: "Microscopio digital",
+    cat: "Ciencia", catColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/25",
+    objetivo: 380, ahorrado: 0, estado: "próximo",
+    grupo: null, fechaAdq: null,
+    desc: "Para biología y electrónica",
+  },
+];
+
+const filteredAssets = computed(() => {
+  if (assetTab.value === "adquiridos") return stemAssets.filter(a => a.estado === "adquirido");
+  if (assetTab.value === "ahorrando")  return stemAssets.filter(a => a.estado === "ahorrando");
+  return stemAssets;
+});
+
+const assetStats = computed(() => ({
+  adquiridos:    stemAssets.filter(a => a.estado === "adquirido").length,
+  ahorrando:     stemAssets.filter(a => a.estado === "ahorrando").length,
+  totalInvertido: stemAssets.filter(a => a.estado === "adquirido").reduce((s, a) => s + a.objetivo, 0),
+  totalEnCurso:  stemAssets.filter(a => a.estado === "ahorrando").reduce((s, a) => s + a.ahorrado, 0),
+}));
+
+// ══════════════════════════════════════════════════════════
+//  PROGRESO STEM — sistema de niveles + hitos alcanzados
+// ══════════════════════════════════════════════════════════
+
+// XP formula: pagos *15 + grupos *30 + score *3 + activos adquiridos *75
+const stemXP = computed(() => {
+  const pXP  = pagosValidos.length * 15;
+  const gXP  = joinedGroups.value.length * 30;
+  const sXP  = Math.round(score.value * 3);
+  const aXP  = stemAssets.filter(a => a.estado === "adquirido").length * 75;
+  return pXP + gXP + sXP + aXP;
+});
+
+const LEVEL_XP         = [0, 100, 250, 500, 900, 1500, 2400];
+const LEVEL_NAMES      = ["", "Exploradora", "Aprendiz", "Constructora", "Innovadora", "Pionera", "Visionaria"];
+const LEVEL_COLORS     = ["", "text-slate-400", "text-emerald-400", "text-cyan-400", "text-violet-400", "text-fuchsia-400", "text-amber-400"];
+const LEVEL_GRADIENTS  = ["", "from-slate-500 to-slate-400", "from-emerald-500 to-teal-400", "from-cyan-500 to-blue-400",
+                             "from-violet-500 to-indigo-400", "from-fuchsia-500 to-violet-400", "from-amber-400 to-yellow-300"];
+const LEVEL_BG         = ["", "bg-slate-500/10 border-slate-500/25", "bg-emerald-500/10 border-emerald-500/25",
+                             "bg-cyan-500/10 border-cyan-500/25", "bg-violet-500/10 border-violet-500/25",
+                             "bg-fuchsia-500/10 border-fuchsia-500/25", "bg-amber-500/10 border-amber-500/25"];
+
+const stemLevel = computed(() => {
+  const xp = stemXP.value;
+  let lv = 1;
+  for (let i = 1; i < LEVEL_XP.length; i++) {
+    if (xp >= LEVEL_XP[i]) lv = i + 1; else break;
+  }
+  return Math.min(lv, LEVEL_NAMES.length - 1);
+});
+
+const stemLevelInfo = computed(() => {
+  const lv   = stemLevel.value;
+  const xpCur = LEVEL_XP[lv - 1];
+  const xpNext = LEVEL_XP[lv] ?? null;
+  const pct  = xpNext ? Math.min(Math.round((stemXP.value - xpCur) / (xpNext - xpCur) * 100), 100) : 100;
+  return {
+    level:    lv,
+    name:     LEVEL_NAMES[lv],
+    color:    LEVEL_COLORS[lv],
+    gradient: LEVEL_GRADIENTS[lv],
+    bg:       LEVEL_BG[lv],
+    xp:       stemXP.value,
+    xpNext,
+    pct,
+    xpToNext: xpNext ? xpNext - stemXP.value : 0,
+  };
+});
+
+// Milestones dinámicos derivados del estado real del usuario
+const stemMilestones = computed(() => {
+  const done = [];
+  const pend = [];
+
+  if (pagosValidos.length >= 1)
+    done.push({ emoji: "💸", label: "Primer aporte validado",      sub: "Historial financiero iniciado",     date: "Ene 2026" });
+  if (joinedGroups.value.length >= 1)
+    done.push({ emoji: "🤝", label: "Primer grupo activo",          sub: "Comunidad de ahorro colaborativo",  date: "Dic 2025" });
+  if (stemAssets.filter(a => a.estado === "adquirido").length >= 1)
+    done.push({ emoji: "✅", label: "Primer activo STEM adquirido", sub: "Herramienta financiada con el grupo", date: "Nov 2025" });
+  if (score.value >= 75)
+    done.push({ emoji: "⭐", label: "Score 'Alta' alcanzado",       sub: "Reputación financiera sólida",      date: "Feb 2026" });
+  if (myCreatedGroups.value.length >= 1)
+    done.push({ emoji: "👑", label: "Grupo propio creado",          sub: "Eres organizadora activa",          date: "Feb 2026" });
+  if (pagosValidos.length >= 5)
+    done.push({ emoji: "🔥", label: "5 aportes validados",          sub: "Consistencia financiera demostrada",date: "Feb 2026" });
+
+  if (score.value < 90)
+    pend.push({ emoji: "🏆", label: "Alcanzar Score Elite",         sub: `Faltan ${90 - score.value} puntos`,  target: "Score ≥ 90" });
+  if (joinedGroups.value.length < 5)
+    pend.push({ emoji: "🌐", label: "5 grupos activos",             sub: `Faltan ${5 - joinedGroups.value.length} grupos`, target: "Grupos activos" });
+  if (stemAssets.filter(a => a.estado === "adquirido").length < 3)
+    pend.push({ emoji: "💎", label: "3 activos STEM adquiridos",    sub: `${3 - stemAssets.filter(a => a.estado === "adquirido").length} más por completar`, target: "Activos STEM" });
+  if (stemLevel.value < 5)
+    pend.push({ emoji: "🚀", label: `Nivel ${LEVEL_NAMES[5]}`,      sub: `${(LEVEL_XP[5] - stemXP.value).toLocaleString()} XP restantes`, target: "XP" });
+
+  return { done, pend };
+});
+
 // ── Edit mode (UI only) ───────────────────────────────────
 const editMode = ref(false);
 const bioText  = ref("Apasionada por la tecnología y el ahorro colaborativo. Busco financiar mis herramientas STEM junto a otras mujeres increíbles. 🚀");
@@ -662,6 +805,251 @@ const bioText  = ref("Apasionada por la tecnología y el ahorro colaborativo. Bu
           <div v-else class="text-center py-8">
             <BarChart2 class="w-10 h-10 text-slate-700 mx-auto mb-3" />
             <p class="text-sm text-slate-500">Sin actividad registrada aún</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           ACTIVOS STEM
+      ═══════════════════════════════════════════ -->
+      <div class="bg-[#0D1225] border border-white/8 rounded-3xl p-7">
+
+        <!-- Header -->
+        <div class="flex items-start justify-between mb-6">
+          <div>
+            <h3 class="text-sm font-bold text-white">Activos STEM</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Herramientas que estás financiando o ya adquiriste</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="text-right">
+              <p class="text-xs text-slate-600">Adquiridos</p>
+              <p class="text-lg font-black text-emerald-400">{{ assetStats.adquiridos }}</p>
+            </div>
+            <div class="w-px h-8 bg-white/8"></div>
+            <div class="text-right">
+              <p class="text-xs text-slate-600">Ahorrando</p>
+              <p class="text-lg font-black text-violet-400">{{ assetStats.ahorrando }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex gap-2 mb-5">
+          <button
+            v-for="tab in [['todos','Todos'],['adquiridos','Adquiridos'],['ahorrando','Ahorrando']]"
+            :key="tab[0]"
+            @click="assetTab = tab[0]"
+            :class="`text-xs font-semibold px-4 py-1.5 rounded-full border transition-all ${
+              assetTab === tab[0]
+                ? 'bg-violet-500/15 border-violet-500/35 text-violet-300'
+                : 'border-white/8 text-slate-500 hover:text-slate-300 hover:border-white/20'
+            }`"
+          >{{ tab[1] }}</button>
+        </div>
+
+        <!-- Asset cards grid -->
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div
+            v-for="asset in filteredAssets"
+            :key="asset.id"
+            class="relative bg-white/4 border border-white/8 rounded-2xl p-4 flex flex-col gap-3 hover:border-white/16 transition-all"
+          >
+            <!-- Status ribbon -->
+            <div
+              v-if="asset.estado === 'adquirido'"
+              class="absolute top-3 right-3 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full"
+            >✓ Adquirido</div>
+            <div
+              v-else-if="asset.estado === 'próximo'"
+              class="absolute top-3 right-3 text-[10px] font-bold text-slate-400 bg-slate-500/10 border border-slate-500/30 px-2 py-0.5 rounded-full"
+            >Próximo</div>
+
+            <!-- Emoji + name -->
+            <div class="flex items-start gap-3">
+              <div class="w-11 h-11 rounded-xl bg-white/6 border border-white/8 flex items-center justify-center text-2xl shrink-0">
+                {{ asset.emoji }}
+              </div>
+              <div class="flex-1 min-w-0 pr-16">
+                <p class="text-sm font-semibold text-white leading-tight">{{ asset.name }}</p>
+                <p class="text-[11px] text-slate-600 mt-0.5">{{ asset.desc }}</p>
+              </div>
+            </div>
+
+            <!-- Category tag -->
+            <span :class="`inline-flex w-fit text-[10px] font-bold border px-2 py-0.5 rounded-full ${asset.catColor}`">
+              {{ asset.cat }}
+            </span>
+
+            <!-- Progress / amount -->
+            <div v-if="asset.estado !== 'próximo'">
+              <div class="flex justify-between text-[11px] mb-1.5">
+                <span class="text-slate-500">
+                  S/ {{ asset.ahorrado.toLocaleString() }}
+                  <span class="text-slate-700"> / S/ {{ asset.objetivo.toLocaleString() }}</span>
+                </span>
+                <span :class="asset.estado === 'adquirido' ? 'text-emerald-400' : 'text-violet-400'" class="font-bold">
+                  {{ Math.round(asset.ahorrado / asset.objetivo * 100) }}%
+                </span>
+              </div>
+              <div class="h-1.5 bg-white/8 rounded-full overflow-hidden">
+                <div
+                  :class="`h-full rounded-full bg-gradient-to-r ${asset.estado === 'adquirido' ? 'from-emerald-500 to-teal-400' : 'from-violet-500 to-indigo-400'}`"
+                  :style="{ width: Math.round(asset.ahorrado / asset.objetivo * 100) + '%' }"
+                ></div>
+              </div>
+            </div>
+            <div v-else class="h-1.5 bg-white/6 rounded-full"></div>
+
+            <!-- Group / adq date -->
+            <div class="flex items-center justify-between mt-auto">
+              <p v-if="asset.grupo" class="text-[11px] text-slate-600 flex items-center gap-1">
+                <Users class="w-3 h-3" />{{ asset.grupo }}
+              </p>
+              <p v-else class="text-[11px] text-slate-700 italic">Sin grupo asignado</p>
+              <p v-if="asset.fechaAdq" class="text-[11px] text-emerald-500">{{ asset.fechaAdq }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer totales -->
+        <div class="mt-6 pt-5 border-t border-white/6 grid grid-cols-2 gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0">
+              <CheckCircle class="w-4 h-4 text-emerald-400" />
+            </div>
+            <div>
+              <p class="text-[11px] text-slate-500">Total adquirido</p>
+              <p class="text-base font-extrabold text-white">S/ {{ assetStats.totalInvertido.toLocaleString() }}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center shrink-0">
+              <TrendingUp class="w-4 h-4 text-violet-400" />
+            </div>
+            <div>
+              <p class="text-[11px] text-slate-500">En progreso activo</p>
+              <p class="text-base font-extrabold text-white">S/ {{ assetStats.totalEnCurso.toLocaleString() }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           PROGRESO STEM
+      ═══════════════════════════════════════════ -->
+      <div class="grid lg:grid-cols-5 gap-6">
+
+        <!-- NIVEL DE USUARIA (col-span-2) -->
+        <div class="lg:col-span-2 bg-[#0D1225] border border-white/8 rounded-3xl p-7 flex flex-col gap-5">
+          <div>
+            <h3 class="text-sm font-bold text-white">Progreso STEM</h3>
+            <p class="text-xs text-slate-500 mt-0.5">Tu nivel en la comunidad</p>
+          </div>
+
+          <!-- Level badge -->
+          <div class="flex flex-col items-center py-4">
+            <div :class="`w-24 h-24 rounded-full flex items-center justify-center text-5xl font-black border-2 ${stemLevelInfo.bg} shadow-lg shadow-black/30`">
+              <span :class="stemLevelInfo.color">{{ stemLevelInfo.level }}</span>
+            </div>
+            <p :class="`text-lg font-extrabold mt-3 ${stemLevelInfo.color}`">{{ stemLevelInfo.name }}</p>
+            <p class="text-xs text-slate-500 mt-1">{{ stemLevelInfo.xp.toLocaleString() }} XP acumulados</p>
+          </div>
+
+          <!-- XP bar -->
+          <div>
+            <div class="flex justify-between text-[11px] text-slate-500 mb-1.5">
+              <span>Nivel {{ stemLevelInfo.level }}</span>
+              <span v-if="stemLevelInfo.xpNext">{{ stemLevelInfo.xpToNext }} XP para nivel {{ stemLevelInfo.level + 1 }}</span>
+              <span v-else class="text-amber-400">¡Nivel máximo!</span>
+            </div>
+            <div class="h-2.5 bg-white/8 rounded-full overflow-hidden">
+              <div
+                :class="`h-full rounded-full bg-gradient-to-r ${stemLevelInfo.gradient} transition-all duration-1000`"
+                :style="{ width: stemLevelInfo.pct + '%' }"
+              ></div>
+            </div>
+            <p class="text-center text-[10px] text-slate-600 mt-1.5">{{ stemLevelInfo.pct }}% completado</p>
+          </div>
+
+          <!-- XP breakdown -->
+          <div class="space-y-2 pt-2 border-t border-white/6">
+            <p class="text-[11px] text-slate-600 font-semibold uppercase tracking-wide mb-3">Fuentes de XP</p>
+            <div v-for="row in [
+              { label: 'Pagos validados',    val: pagosValidos.length * 15,   icon: '💸', desc: `${pagosValidos.length} × 15 XP` },
+              { label: 'Grupos activos',     val: joinedGroups.length * 30,   icon: '🤝', desc: `${joinedGroups.length} × 30 XP` },
+              { label: 'Score de confianza', val: Math.round(score * 3),      icon: '⭐', desc: `${score} × 3 XP` },
+              { label: 'Activos adquiridos', val: assetStats.adquiridos * 75, icon: '✅', desc: `${assetStats.adquiridos} × 75 XP` },
+            ]" :key="row.label" class="flex items-center justify-between">
+              <div class="flex items-center gap-2">
+                <span class="text-base">{{ row.icon }}</span>
+                <div>
+                  <p class="text-[11px] text-white">{{ row.label }}</p>
+                  <p class="text-[10px] text-slate-600">{{ row.desc }}</p>
+                </div>
+              </div>
+              <span class="text-xs font-bold text-slate-400">+{{ row.val }} XP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- HITOS / MILESTONES (col-span-3) -->
+        <div class="lg:col-span-3 bg-[#0D1225] border border-white/8 rounded-3xl p-7 flex flex-col gap-5">
+          <div class="flex items-center justify-between">
+            <div>
+              <h3 class="text-sm font-bold text-white">Hitos alcanzados</h3>
+              <p class="text-xs text-slate-500 mt-0.5">{{ stemMilestones.done.length }} logros desbloqueados</p>
+            </div>
+            <span class="text-2xl">🗺️</span>
+          </div>
+
+          <!-- Done milestones -->
+          <div class="space-y-3">
+            <div
+              v-for="(m, i) in stemMilestones.done"
+              :key="'done-' + i"
+              class="flex items-start gap-3 bg-white/4 border border-white/8 rounded-2xl p-4 relative overflow-hidden"
+            >
+              <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent pointer-events-none"></div>
+              <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-center justify-center text-xl shrink-0 relative">
+                {{ m.emoji }}
+              </div>
+              <div class="flex-1 min-w-0 relative">
+                <p class="text-sm font-semibold text-white leading-tight">{{ m.label }}</p>
+                <p class="text-xs text-slate-500 mt-0.5">{{ m.sub }}</p>
+              </div>
+              <div class="text-right relative shrink-0">
+                <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/25 px-2 py-0.5 rounded-full block">✓</span>
+                <p class="text-[10px] text-slate-600 mt-1">{{ m.date }}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="flex items-center gap-3">
+            <div class="flex-1 h-px bg-white/6"></div>
+            <span class="text-[11px] text-slate-600 font-semibold">Próximos objetivos</span>
+            <div class="flex-1 h-px bg-white/6"></div>
+          </div>
+
+          <!-- Pending milestones -->
+          <div class="space-y-3">
+            <div
+              v-for="(m, i) in stemMilestones.pend"
+              :key="'pend-' + i"
+              class="flex items-start gap-3 border border-dashed border-white/10 rounded-2xl p-4 opacity-75"
+            >
+              <div class="w-10 h-10 rounded-xl bg-white/4 border border-white/8 flex items-center justify-center text-xl shrink-0 grayscale opacity-60">
+                {{ m.emoji }}
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-semibold text-slate-400 leading-tight">{{ m.label }}</p>
+                <p class="text-xs text-slate-600 mt-0.5">{{ m.sub }}</p>
+              </div>
+              <span class="text-[10px] text-slate-700 border border-white/8 px-2 py-0.5 rounded-full shrink-0">Pendiente</span>
+            </div>
+            <div v-if="!stemMilestones.pend.length" class="text-center py-4">
+              <p class="text-sm text-amber-400 font-semibold">🏆 ¡Todos los hitos completados!</p>
+            </div>
           </div>
         </div>
       </div>
