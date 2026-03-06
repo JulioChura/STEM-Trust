@@ -50,7 +50,7 @@ async function onRegister() {
   try {
     const data = await authService.register({ ...form });
     await authService.saveSessionFromAuthResponse(data);
-    router.push("/dashboard");
+    router.push("/onboarding");
   } catch (err) {
     const d = err?.data;
     if (d) {
@@ -70,7 +70,7 @@ function handleGoogleResponse(response) {
   authService.loginWithGoogle(response.credential)
     .then(async (data) => {
       await authService.saveSessionFromAuthResponse(data);
-      router.push("/dashboard");
+      router.push("/onboarding");
     })
     .catch((err) => {
       errorMessage.value = err?.data?.detail || "Error con Google. Intenta de nuevo.";

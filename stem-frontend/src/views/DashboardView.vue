@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import {
   Sparkles, Users, Laptop, TrendingUp, Bell, LogOut,
   Plus, ChevronRight, CircleDollarSign, BarChart2,
@@ -8,8 +8,10 @@ import {
 } from "lucide-vue-next";
 import { authStore } from "../stores/authStore";
 import { authService } from "../services/authService";
+import { objetivoConfig } from "../data/mockGroups.js";
 
 const router = useRouter();
+const route  = useRoute();
 
 const user = computed(() => authStore.user);
 const firstName = computed(() => user.value?.first_name || user.value?.email?.split("@")[0] || "Bienvenida");
@@ -21,32 +23,41 @@ const avatarInitials = computed(() => {
 
 const sidebarOpen = ref(false);
 
+const joinedGroups = computed(() => {
+  try { return JSON.parse(localStorage.getItem("joined_groups") || "[]"); }
+  catch { return []; }
+});
+
+const totalAhorros = computed(() =>
+  joinedGroups.value.reduce((sum, g) => sum + (g.montoActual || 0), 0)
+);
+
 async function logout() {
   try { await authService.logout(); } catch (_) {}
   authService.clearSession();
   router.push("/");
 }
 
-const stats = [
-  { label: "Grupos activos", value: "0", icon: Users, color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
-  { label: "Ahorros totales", value: "S/ 0", icon: CircleDollarSign, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
-  { label: "Tu scoring", value: "--", icon: BarChart2, color: "text-cyan-400", bg: "bg-cyan-500/10 border-cyan-500/20" },
-  { label: "Cursos en progreso", value: "0", icon: BookOpen, color: "text-amber-400", bg: "bg-amber-500/10 border-amber-500/20" },
-];
+const stats = computed(() => [
+  { label: "Grupos activos",    value: String(joinedGroups.value.length),                 icon: Users,           color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
+  { label: "Ahorros totales",   value: `S/ ${totalAhorros.value.toLocaleString()}`,       icon: CircleDollarSign, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/20" },
+  { label: "Tu scoring",        value: joinedGroups.value.length > 0 ? "100%" : "--",     icon: BarChart2,        color: "text-cyan-400",    bg: "bg-cyan-500/10 border-cyan-500/20" },
+  { label: "Cursos en progreso",value: "0",                                              icon: BookOpen,         color: "text-amber-400",   bg: "bg-amber-500/10 border-amber-500/20" },
+]);
 
 const quickActions = [
-  { label: "Crear grupo", desc: "Forma un grupo de ahorro STEM", icon: Plus, to: "/groups/new", accent: "from-violet-600 to-indigo-600" },
-  { label: "Unirse a grupo", desc: "Busca grupos con tu objetivo", icon: Users, to: "/groups", accent: "from-cyan-600 to-teal-600" },
-  { label: "Cargar comprobante", desc: "Valida tu aporte con OCR", icon: Shield, to: "/payments/upload", accent: "from-emerald-600 to-green-600" },
+  { label: "Crear grupo",        desc: "Forma tu propia comunidad STEM",    icon: Plus,   to: "/groups/new",       accent: "from-violet-600 to-indigo-600" },
+  { label: "Explorar grupos",    desc: "Busca grupos con tu objetivo",      icon: Users,  to: "/groups",           accent: "from-cyan-600 to-teal-600" },
+  { label: "Cargar comprobante", desc: "Valida tu aporte con OCR",          icon: Shield, to: "/payments/upload",  accent: "from-emerald-600 to-green-600" },
 ];
 
 const navLinks = [
-  { label: "Dashboard", icon: BarChart2, to: "/dashboard", active: true },
-  { label: "Mis grupos", icon: Users, to: "/groups", active: false },
-  { label: "Activos STEM", icon: Laptop, to: "/assets", active: false },
-  { label: "Progreso STEM", icon: TrendingUp, to: "/progress", active: false },
-  { label: "Perfil", icon: User, to: "/profile", active: false },
-  { label: "Configuración", icon: Settings, to: "/settings", active: false },
+  { label: "Dashboard",     icon: BarChart2,  to: "/dashboard" },
+  { label: "Mis grupos",    icon: Users,      to: "/groups" },
+  { label: "Activos STEM", icon: Laptop,     to: "/assets" },
+  { label: "Progreso STEM",icon: TrendingUp, to: "/progress" },
+  { label: "Perfil",       icon: User,       to: "/profile" },
+  { label: "Configuración",icon: Settings,   to: "/settings" },
 ];
 </script>
 
@@ -77,7 +88,7 @@ const navLinks = [
           :key="link.label"
           :to="link.to"
           class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all no-underline"
-          :class="link.active
+          :class="route.path.startsWith(link.to)
             ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
             : 'text-slate-400 hover:text-white hover:bg-white/5'"
         >
@@ -172,6 +183,7 @@ const navLinks = [
             <button
               v-for="action in quickActions"
               :key="action.label"
+              @click="router.push(action.to)"
               class="group text-left bg-white/5 hover:bg-white/8 border border-white/10 hover:border-white/20 rounded-2xl p-5 transition-all hover:-translate-y-0.5"
             >
               <div :class="`w-10 h-10 rounded-xl bg-gradient-to-br ${action.accent} flex items-center justify-center mb-4 shadow-lg`">
@@ -186,12 +198,84 @@ const navLinks = [
           </div>
         </div>
 
-        <!-- Empty state: no groups yet -->
+        <!-- Mis grupos section -->
         <div>
           <div class="flex items-center justify-between mb-4">
             <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-widest">Mis grupos</h3>
+            <router-link to="/groups" class="text-xs text-violet-400 hover:text-violet-300 transition-colors no-underline flex items-center gap-1">
+              Explorar <ChevronRight class="w-3 h-3" />
+            </router-link>
           </div>
-          <div class="bg-white/5 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center">
+
+          <!-- Joined groups grid -->
+          <div v-if="joinedGroups.length > 0" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4">
+            <div
+              v-for="g in joinedGroups"
+              :key="g.id"
+              class="bg-white/5 border border-white/10 hover:border-white/20 rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5"
+            >
+              <div class="p-5">
+                <!-- Header -->
+                <div class="flex items-start gap-3 mb-4">
+                  <div :class="`w-10 h-10 rounded-xl ${objetivoConfig[g.objetivo]?.bg} border flex items-center justify-center text-lg shrink-0`">
+                    {{ objetivoConfig[g.objetivo]?.emoji }}
+                  </div>
+                  <div class="flex-1 min-w-0">
+                    <h4 class="text-sm font-bold text-white truncate">{{ g.name }}</h4>
+                    <p class="text-xs text-slate-500 mt-0.5 truncate">{{ g.ubicacion }}</p>
+                  </div>
+                  <span :class="`text-xs px-2 py-0.5 rounded-full border shrink-0 ${
+                    g.status === 'open' ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' :
+                    g.status === 'in_progress' ? 'bg-cyan-500/15 border-cyan-500/30 text-cyan-400' :
+                    'bg-amber-500/15 border-amber-500/30 text-amber-400'
+                  }`">
+                    {{ g.isOrganizer ? '★ Org.' : 'Miembro' }}
+                  </span>
+                </div>
+                <!-- Progress -->
+                <div class="mb-4">
+                  <div class="flex justify-between text-xs mb-1.5">
+                    <span class="text-slate-500">Recaudado</span>
+                    <span class="font-semibold text-slate-300">{{ Math.round((g.montoActual / g.montoObjetivo) * 100) }}%</span>
+                  </div>
+                  <div class="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-gradient-to-r from-violet-500 to-indigo-400 rounded-full transition-all"
+                      :style="{ width: Math.round((g.montoActual / g.montoObjetivo) * 100) + '%' }"
+                    ></div>
+                  </div>
+                  <div class="flex justify-between text-xs mt-1 text-slate-600">
+                    <span>S/ {{ g.montoActual.toLocaleString() }}</span>
+                    <span>S/ {{ g.montoObjetivo.toLocaleString() }}</span>
+                  </div>
+                </div>
+                <!-- Footer -->
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-slate-500">S/ {{ g.aporteMensual }}/mes · {{ g.plazoMeses }}m</span>
+                  <router-link
+                    :to="`/groups/${g.slug}`"
+                    class="text-xs text-violet-400 hover:text-violet-300 transition-colors no-underline flex items-center gap-1 font-medium"
+                  >
+                    Ver estado <ChevronRight class="w-3 h-3" />
+                  </router-link>
+                </div>
+              </div>
+            </div>
+
+            <!-- Create new group CTA card -->
+            <button
+              @click="router.push('/groups/new')"
+              class="group flex flex-col items-center justify-center gap-3 bg-white/3 hover:bg-white/5 border border-dashed border-white/15 hover:border-violet-500/40 rounded-2xl p-8 transition-all hover:-translate-y-0.5 min-h-[180px]"
+            >
+              <div class="w-10 h-10 rounded-xl bg-white/5 group-hover:bg-violet-500/20 border border-white/10 group-hover:border-violet-500/30 flex items-center justify-center transition-all">
+                <Plus class="w-5 h-5 text-slate-500 group-hover:text-violet-400 transition-colors" />
+              </div>
+              <span class="text-xs text-slate-500 group-hover:text-slate-300 text-center transition-colors">Crear o unirse a otro grupo</span>
+            </button>
+          </div>
+
+          <!-- Empty state -->
+          <div v-else class="bg-white/5 border border-white/10 rounded-2xl p-10 flex flex-col items-center text-center">
             <div class="w-16 h-16 rounded-2xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center mb-4">
               <Users class="w-8 h-8 text-violet-400" />
             </div>
@@ -199,9 +283,20 @@ const navLinks = [
             <p class="text-sm text-slate-400 max-w-xs mb-6">
               Crea o únete a un grupo de ahorro para empezar a construir tu historial financiero y acceder a activos STEM.
             </p>
-            <button class="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-6 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-violet-500/20 hover:-translate-y-0.5 hover:shadow-violet-500/40">
-              <Plus class="w-4 h-4" /> Crear mi primer grupo
-            </button>
+            <div class="flex gap-3">
+              <button
+                @click="router.push('/groups/new')"
+                class="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-5 py-2.5 rounded-xl text-sm transition-all shadow-lg shadow-violet-500/20 hover:-translate-y-0.5"
+              >
+                <Plus class="w-4 h-4" /> Crear grupo
+              </button>
+              <button
+                @click="router.push('/groups')"
+                class="flex items-center gap-2 bg-white/5 border border-white/10 hover:border-white/20 text-slate-300 font-medium px-5 py-2.5 rounded-xl text-sm transition-all"
+              >
+                Explorar grupos
+              </button>
+            </div>
           </div>
         </div>
 
