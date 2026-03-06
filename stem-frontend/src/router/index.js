@@ -14,6 +14,7 @@ import InviteView from "../views/InviteView.vue";
 import PagosView from "../views/pagos/PagosView.vue";
 import HistorialView from "../views/historial/HistorialView.vue";
 import ProgresoView from "../views/progreso/ProgresoView.vue";
+import SettingsView from "../views/SettingsView.vue";
 
 const routes = [
   {
@@ -99,6 +100,12 @@ const routes = [
     path: "/progress",
     name: "progress",
     component: ProgresoView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/settings",
+    name: "settings",
+    component: SettingsView,
     meta: { requiresAuth: true },
   },
 ];
