@@ -50,6 +50,7 @@ const quickActions = [
   { label: "Unirse a grupo",     desc: "Busca grupos con tu objetivo",    icon: Users,            to: "/groups",           accent: "from-cyan-600 to-teal-600"    },
   { label: "Mis pagos",          desc: "Historial y comprobantes OCR",    icon: CircleDollarSign, to: "/pagos",            accent: "from-emerald-600 to-green-600" },
   { label: "Mi historial",       desc: "Scoring y reporte financiero",   icon: History,          to: "/historial",        accent: "from-indigo-600 to-violet-600" },
+  { label: "Progreso STEM",      desc: "Cursos, certificados y score",  icon: TrendingUp,       to: "/progress",         accent: "from-cyan-600 to-teal-600"    },
   { label: "Cargar comprobante", desc: "Valida tu aporte con OCR",        icon: Shield,           to: "/payments/upload",  accent: "from-amber-600 to-orange-600" },
 ];
 
