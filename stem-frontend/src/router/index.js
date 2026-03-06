@@ -113,10 +113,6 @@ const routes = [
     path: "/assets",
     redirect: () => ({ path: "/profile", hash: "#activos-stem" }),
   },
-  {
-    path: "/progress",
-    redirect: () => ({ path: "/profile", hash: "#progreso-stem" }),
-  },
 ];
 
 const router = createRouter({

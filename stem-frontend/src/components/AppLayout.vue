@@ -31,26 +31,24 @@ async function logout() {
 }
 
 function isActive(link) {
-  // Para links que redirigen a /profile con hash
+  // /assets redirige a /profile con hash
   if (link.to === "/assets")
     return route.path === "/profile" && route.hash === "#activos-stem";
-  if (link.to === "/progress")
-    return route.path === "/profile" && route.hash === "#progreso-stem";
-  // Para /profile sin hash, evitar que se active cuando estamos en sub-ancla
+  // /profile sin hash: evitar que se active al estar en sub-ancla
   if (link.to === "/profile")
     return route.path === "/profile" && !route.hash;
   return route.path.startsWith(link.to);
 }
 
 const navLinks = [
-  { label: "Dashboard",     icon: BarChart2,         to: "/dashboard" },
+  { label: "Dashboard",       icon: BarChart2,        to: "/dashboard" },
   { label: "Explorar grupos", icon: Users,            to: "/groups" },
-  { label: "Pagos",          icon: CircleDollarSign,  to: "/pagos" },
-  { label: "Activos STEM",   icon: Laptop,            to: "/assets" },
-  { label: "Progreso STEM",  icon: TrendingUp,        to: "/progress" },
-  { label: "Cursos",         icon: BookOpen,          to: "/courses" },
-  { label: "Perfil",         icon: User,              to: "/profile" },
-  { label: "Configuración",  icon: Settings,          to: "/settings" },
+  { label: "Pagos",           icon: CircleDollarSign, to: "/pagos" },
+  { label: "Activos STEM",    icon: Laptop,           to: "/assets" },
+  { label: "Progreso STEM",   icon: TrendingUp,       to: "/progress" },
+  { label: "Historial",       icon: BarChart2,        to: "/historial" },
+  { label: "Perfil",          icon: User,             to: "/profile" },
+  { label: "Configuración",   icon: Settings,        to: "/settings" },
 ];
 </script>
 
