@@ -12,6 +12,7 @@ import GroupDetailView from "../views/GroupDetailView.vue";
 import CreateGroupView from "../views/CreateGroupView.vue";
 import InviteView from "../views/InviteView.vue";
 import PagosView from "../views/pagos/PagosView.vue";
+import HistorialView from "../views/historial/HistorialView.vue";
 
 const routes = [
   {
@@ -85,6 +86,12 @@ const routes = [
     path: "/pagos",
     name: "pagos",
     component: PagosView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/historial",
+    name: "historial",
+    component: HistorialView,
     meta: { requiresAuth: true },
   },
 ];

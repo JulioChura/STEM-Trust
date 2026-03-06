@@ -4,7 +4,7 @@ import { useRouter, useRoute } from "vue-router";
 import {
   Sparkles, Users, Laptop, TrendingUp, Bell, LogOut,
   Plus, ChevronRight, CircleDollarSign, BarChart2,
-  BookOpen, Shield, Clock, CheckCircle, Settings, User
+  BookOpen, Shield, Clock, CheckCircle, Settings, User, History
 } from "lucide-vue-next";
 import { authStore } from "../stores/authStore";
 import { authService } from "../services/authService";
@@ -49,6 +49,7 @@ const quickActions = [
   { label: "Crear grupo",        desc: "Forma un grupo de ahorro STEM",   icon: Plus,             to: "/groups/new",       accent: "from-violet-600 to-indigo-600" },
   { label: "Unirse a grupo",     desc: "Busca grupos con tu objetivo",    icon: Users,            to: "/groups",           accent: "from-cyan-600 to-teal-600"    },
   { label: "Mis pagos",          desc: "Historial y comprobantes OCR",    icon: CircleDollarSign, to: "/pagos",            accent: "from-emerald-600 to-green-600" },
+  { label: "Mi historial",       desc: "Scoring y reporte financiero",   icon: History,          to: "/historial",        accent: "from-indigo-600 to-violet-600" },
   { label: "Cargar comprobante", desc: "Valida tu aporte con OCR",        icon: Shield,           to: "/payments/upload",  accent: "from-amber-600 to-orange-600" },
 ];
 
@@ -56,6 +57,7 @@ const navLinks = [
   { label: "Dashboard",     icon: BarChart2,        to: "/dashboard" },
   { label: "Mis grupos",    icon: Users,            to: "/groups" },
   { label: "Pagos",         icon: CircleDollarSign, to: "/pagos" },
+  { label: "Historial",     icon: History,          to: "/historial" },
   { label: "Activos STEM",  icon: Laptop,           to: "/assets" },
   { label: "Progreso STEM", icon: TrendingUp,       to: "/progress" },
   { label: "Perfil",        icon: User,             to: "/profile" },

@@ -4,7 +4,7 @@ import { useRouter } from "vue-router";
 import {
   Sparkles, Users, Laptop, TrendingUp, Bell, LogOut,
   Plus, BarChart2, BookOpen, CircleDollarSign, Settings,
-  User, Search, Filter, Upload, X
+  User, Search, Filter, Upload, X, History
 } from "lucide-vue-next";
 import { authStore } from "../../stores/authStore";
 import { authService } from "../../services/authService";
@@ -37,6 +37,7 @@ const navLinks = [
   { label: "Dashboard",    icon: BarChart2,         to: "/dashboard"  },
   { label: "Mis grupos",   icon: Users,             to: "/groups"     },
   { label: "Pagos",        icon: CircleDollarSign,  to: "/pagos"      },
+  { label: "Historial",    icon: History,           to: "/historial"  },
   { label: "Activos STEM", icon: Laptop,            to: "/assets"     },
   { label: "Progreso STEM",icon: TrendingUp,        to: "/progress"   },
   { label: "Perfil",       icon: User,              to: "/profile"    },
