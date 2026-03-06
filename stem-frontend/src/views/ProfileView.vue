@@ -83,6 +83,55 @@ const scoreBreakdown = computed(() => {
 
 const score = computed(() => scoreBreakdown.value.total);
 
+// ── Score Individual (comportamiento personal de pagos) ───
+// Basado exclusivamente en dimensiones propias: puntualidad + consistencia + OCR + bonus
+const scoreIndividual = computed(() => {
+  const b = scoreBreakdown.value;
+  // Esas 3 dimensiones suman hasta 65 pts → normalizar a 100
+  const raw = b.puntualidad.pts + b.consistencia.pts + b.ocr.pts + b.bonus.pts;
+  return Math.min(Math.round(raw / 90 * 100), 100);
+});
+
+const scoreIndividualTier = computed(() => {
+  const s = scoreIndividual.value;
+  if (s >= 90) return { label: "Excelente", color: "text-amber-400",   bg: "bg-amber-500/10",   border: "border-amber-500/30",   bar: "from-amber-400 to-yellow-300",   icon: "🏆" };
+  if (s >= 70) return { label: "Muy bueno", color: "text-emerald-400", bg: "bg-emerald-500/10", border: "border-emerald-500/30", bar: "from-emerald-400 to-teal-300",   icon: "✅" };
+  if (s >= 50) return { label: "Regular",   color: "text-cyan-400",    bg: "bg-cyan-500/10",    border: "border-cyan-500/30",    bar: "from-cyan-400 to-blue-300",     icon: "📈" };
+  return         { label: "Inicial",   color: "text-violet-400",  bg: "bg-violet-500/10",  border: "border-violet-500/30",  bar: "from-violet-400 to-indigo-300", icon: "🌱" };
+});
+
+// ── Score Grupal (comportamiento dentro de grupos) ───────
+// Basado en participación, rol, diversidad y tamaño de grupos
+const scoreGrupal = computed(() => {
+  const total  = joinedGroups.value.length;
+  const org    = myCreatedGroups.value.length;
+  // Participación (0-40): hasta 5 grupos
+  const partPts  = Math.min(total, 5) / 5 * 40;
+  // Rol organizadora (0-25): cada grupo liderado suma
+  const orgPts   = Math.min(org, 3) / 3 * 25;
+  // Diversidad de objetivos (0-20): objetivos únicos
+  const uniqueObj = new Set(joinedGroups.value.map(g => g.objetivo)).size;
+  const divPts   = Math.min(uniqueObj, 4) / 4 * 20;
+  // Completitud del perfil de grupos (0-15): tiene foto comprobante, etc.
+  const pagosEnGrupo = pagosValidos.length;
+  const complPts = Math.min(pagosEnGrupo, 3) / 3 * 15;
+  return Math.min(Math.round(partPts + orgPts + divPts + complPts), 100);
+});
+
+const scoreGrupalTier = computed(() => {
+  const s = scoreGrupal.value;
+  if (s >= 85) return { label: "Líder",       color: "text-fuchsia-400", bg: "bg-fuchsia-500/10", border: "border-fuchsia-500/30", bar: "from-fuchsia-400 to-violet-400",  icon: "👑" };
+  if (s >= 65) return { label: "Activa",      color: "text-indigo-400",  bg: "bg-indigo-500/10",  border: "border-indigo-500/30",  bar: "from-indigo-400 to-blue-400",    icon: "🤝" };
+  if (s >= 40) return { label: "Participante",color: "text-cyan-400",    bg: "bg-cyan-500/10",    border: "border-cyan-500/30",    bar: "from-cyan-400 to-teal-300",      icon: "👥" };
+  return         { label: "Nueva",       color: "text-slate-400",  bg: "bg-slate-500/10",  border: "border-slate-500/30",  bar: "from-slate-400 to-slate-300",   icon: "🌱" };
+});
+
+// SVG params for mini gauges
+const R2 = 36;
+const C2 = 2 * Math.PI * R2;
+const dashIndividual = computed(() => C2 * (1 - scoreIndividual.value / 100));
+const dashGrupal     = computed(() => C2 * (1 - scoreGrupal.value     / 100));
+
 const scoreTier = computed(() => {
   const s = score.value;
   if (s >= 90) return { label: "Elite", color: "text-amber-400",   ring: "ring-amber-400/40",   bg: "bg-amber-500/10",   bar: "from-amber-400 to-yellow-300",  desc: "Reputación financiera excepcional" };
@@ -336,6 +385,172 @@ const bioText  = ref("Apasionada por la tecnología y el ahorro colaborativo. Bu
               <p class="text-xs text-slate-400 leading-relaxed">
                 Realiza tus aportes antes de la fecha límite, sube comprobantes con OCR verificado, y únete a más grupos STEM para aumentar tu reputación.
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           SCORE INDIVIDUAL + SCORE GRUPAL
+      ═══════════════════════════════════════════ -->
+      <div class="grid sm:grid-cols-2 gap-6">
+
+        <!-- Score Individual -->
+        <div class="bg-[#0D1225] border border-white/8 rounded-3xl p-7">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <h3 class="text-sm font-bold text-white">Score Individual</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Tu comportamiento personal de pagos</p>
+            </div>
+            <span :class="`text-lg`">{{ scoreIndividualTier.icon }}</span>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <!-- Mini gauge -->
+            <div class="relative w-24 h-24 shrink-0">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" :r="R2" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" />
+                <circle cx="44" cy="44" :r="R2" fill="none"
+                  stroke="url(#indGrad)" stroke-width="8" stroke-linecap="round"
+                  :stroke-dasharray="C2" :stroke-dashoffset="dashIndividual"
+                  style="transition: stroke-dashoffset 1s ease"
+                />
+                <defs>
+                  <linearGradient id="indGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="#10b981" />
+                    <stop offset="100%" stop-color="#06b6d4" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span class="text-2xl font-black text-white leading-none">{{ scoreIndividual }}</span>
+                <span class="text-[10px] text-slate-600">/ 100</span>
+              </div>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <span :class="`inline-block text-xs font-bold px-2.5 py-1 rounded-full border ${scoreIndividualTier.bg} ${scoreIndividualTier.border} ${scoreIndividualTier.color} mb-3`">
+                {{ scoreIndividualTier.label }}
+              </span>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">Puntualidad</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400" :style="`width: ${scoreBreakdown.puntualidad.pts / scoreBreakdown.puntualidad.max * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ scoreBreakdown.puntualidad.pts }}/{{ scoreBreakdown.puntualidad.max }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">Consistencia</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-blue-400" :style="`width: ${scoreBreakdown.consistencia.pts / scoreBreakdown.consistencia.max * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ scoreBreakdown.consistencia.pts }}/{{ scoreBreakdown.consistencia.max }}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">OCR ok</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-violet-400" :style="`width: ${scoreBreakdown.ocr.pts / scoreBreakdown.ocr.max * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ scoreBreakdown.ocr.pts }}/{{ scoreBreakdown.ocr.max }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 h-px bg-white/6"></div>
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p class="text-base font-extrabold text-white">{{ pagosEnTiempo.length }}</p>
+              <p class="text-[11px] text-slate-500">A tiempo</p>
+            </div>
+            <div>
+              <p class="text-base font-extrabold" :class="pagosTardios.length > 0 ? 'text-rose-400' : 'text-emerald-400'">{{ pagosTardios.length }}</p>
+              <p class="text-[11px] text-slate-500">Tardíos</p>
+            </div>
+            <div>
+              <p class="text-base font-extrabold text-white">{{ pagosValidos.filter(p => p.ocr_verificado).length }}</p>
+              <p class="text-[11px] text-slate-500">OCR ok</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Score Grupal -->
+        <div class="bg-[#0D1225] border border-white/8 rounded-3xl p-7">
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <h3 class="text-sm font-bold text-white">Score Grupal</h3>
+              <p class="text-xs text-slate-500 mt-0.5">Tu impacto dentro de la comunidad</p>
+            </div>
+            <span class="text-lg">{{ scoreGrupalTier.icon }}</span>
+          </div>
+
+          <div class="flex items-center gap-6">
+            <!-- Mini gauge -->
+            <div class="relative w-24 h-24 shrink-0">
+              <svg class="w-full h-full -rotate-90" viewBox="0 0 88 88">
+                <circle cx="44" cy="44" :r="R2" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" />
+                <circle cx="44" cy="44" :r="R2" fill="none"
+                  stroke="url(#grpGrad)" stroke-width="8" stroke-linecap="round"
+                  :stroke-dasharray="C2" :stroke-dashoffset="dashGrupal"
+                  style="transition: stroke-dashoffset 1s ease"
+                />
+                <defs>
+                  <linearGradient id="grpGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%"   stop-color="#a855f7" />
+                    <stop offset="100%" stop-color="#6366f1" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="absolute inset-0 flex flex-col items-center justify-center">
+                <span class="text-2xl font-black text-white leading-none">{{ scoreGrupal }}</span>
+                <span class="text-[10px] text-slate-600">/ 100</span>
+              </div>
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <span :class="`inline-block text-xs font-bold px-2.5 py-1 rounded-full border ${scoreGrupalTier.bg} ${scoreGrupalTier.border} ${scoreGrupalTier.color} mb-3`">
+                {{ scoreGrupalTier.label }}
+              </span>
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">Participación</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-violet-500 to-indigo-400" :style="`width: ${Math.min(joinedGroups.length, 5) / 5 * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ Math.min(joinedGroups.length, 5) }}/5</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">Organizadora</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-fuchsia-500 to-violet-400" :style="`width: ${Math.min(myCreatedGroups.length, 3) / 3 * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ Math.min(myCreatedGroups.length, 3) }}/3</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] text-slate-500 w-20 shrink-0">Diversidad</span>
+                  <div class="flex-1 h-1.5 bg-white/8 rounded-full overflow-hidden">
+                    <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-cyan-400" :style="`width: ${Math.min(new Set(joinedGroups.map(g => g.objetivo)).size, 4) / 4 * 100}%`"></div>
+                  </div>
+                  <span class="text-[11px] text-slate-400 w-9 text-right">{{ Math.min(new Set(joinedGroups.map(g => g.objetivo)).size, 4) }}/4</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5 h-px bg-white/6"></div>
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+            <div>
+              <p class="text-base font-extrabold text-white">{{ joinedGroups.length }}</p>
+              <p class="text-[11px] text-slate-500">Grupos</p>
+            </div>
+            <div>
+              <p class="text-base font-extrabold text-fuchsia-400">{{ myCreatedGroups.length }}</p>
+              <p class="text-[11px] text-slate-500">Organizados</p>
+            </div>
+            <div>
+              <p class="text-base font-extrabold text-white">{{ new Set(joinedGroups.map(g => g.objetivo)).size }}</p>
+              <p class="text-[11px] text-slate-500">Objetivos</p>
             </div>
           </div>
         </div>
